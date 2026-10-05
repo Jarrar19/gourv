@@ -1,0 +1,24 @@
+{
+  "name": "jit-campus-navigator",
+  "version": "1.0.0",
+  "description": "Interactive campus navigation and floor guide for Jhulelal Institute of Technology (JIT), Nagpur.",
+  "scripts": {
+    "build": "node copy-assets.js",
+    "cap:sync": "node copy-assets.js && npx cap sync android",
+    "cap:open": "npx cap open android",
+    "build:apk": "node copy-assets.js && npx cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "keywords": [
+    "campus-navigator",
+    "jit-nagpur",
+    "indoor-navigation",
+    "floor-map"
+  ],
+  "author": "JIT Nagpur",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^7.6.9",
+    "@capacitor/core": "^8.5.2"
+  }
+}

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jhulelal Institute of Technology | Campus Navigator & Map</title>
+  <meta name="description" content="Official interactive campus map and floor navigation guide for Jhulelal Institute of Technology (JIT), Nagpur. Easily locate academic departments, offices, labs, library, and auditorium.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#044475">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="JIT Campus">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Master Application Frame -->
+  <div id="app" class="app-container">
+
+    <!-- Top College Brand Strip -->
+    <div class="top-accent-bar"></div>
+
+    <!-- Official Header Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <a href="https://www.jitnagpur.edu.in/" target="_blank" rel="noopener" class="college-brand" title="Visit JIT Nagpur Official Website">
+          <div class="brand-emblem">JIT</div>
+          <div class="brand-text-col">
+            <span class="college-name">Jhulelal Institute of Technology</span>
+            <span class="campus-tagline">Campus Navigator &amp; Floor Guide • Nagpur</span>
+          </div>
+        </a>
+
+        <!-- Quick Search Bar -->
+        <button id="searchTriggerBtn" class="header-search-box" title="Search departments, labs, offices (Press Ctrl+K or /)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="search-placeholder-text">Search rooms, departments, labs, offices...</span>
+          <span class="search-shortcut-tag">Ctrl K</span>
+        </button>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-right">
+        <!-- Install App Button (PWA prompt) -->
+        <button id="pwaInstallBtn" class="college-link-btn hidden" title="Install JIT Campus App on your phone/PC">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Install App</span>
+        </button>
+
+        <a href="https://www.jitnagpur.edu.in/" target="_blank" rel="noopener" class="college-link-btn" title="Open College Website">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>jitnagpur.edu.in</span>
+        </a>
+
+        <!-- Sound FX Toggle -->
+        <button id="sfxToggleBtn" class="header-icon-btn active" title="UI Sound Effects Enabled">
+          <svg id="sfxIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="sfxIconOff" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          </svg>
+        </button>
+
+        <!-- Voice Guidance Toggle -->
+        <button id="voiceToggleBtn" class="header-icon-btn active" title="Spoken Voice Guidance Enabled">
+          <svg id="voiceIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+          <svg id="voiceIconOff" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+            <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+            <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+        </button>
+
+        <!-- Fullscreen Toggle -->
+        <button id="fullscreenToggleBtn" class="header-icon-btn" title="Toggle Fullscreen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Layout -->
+    <div class="workspace-layout">
+
+      <!-- Navigation Sidebar -->
+      <aside id="sidebar" class="sidebar">
+        <!-- Sidebar Navigation Tabs -->
+        <nav class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="navRouteTab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+            </svg>
+            <span>Route</span>
+          </button>
+          <button class="tab-btn" data-tab="navDirectoryTab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Directory</span>
+          </button>
+          <button class="tab-btn" data-tab="navMatrixTab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>Floor Guide</span>
+          </button>
+        </nav>
+
+        <!-- TAB 1: Route Planner -->
+        <div id="navRouteTab" class="tab-pane active">
+          
+          <!-- Route Input Card -->
+          <div class="route-card">
+            <div class="route-card-title">
+              <span class="route-heading">Get Walking Directions</span>
+              <span class="route-badge">Turn-by-Turn</span>
+            </div>
+
+            <div class="route-inputs">
+              <!-- Origin (Start) -->
+              <div class="input-row">
+                <div class="pin-icon start-pin">A</div>
+                <div class="select-box">
+                  <label for="startLocationSelect">Starting From</label>
+                  <select id="startLocationSelect">
+                    <option value="parking" selected>🚗 Parking Area (Main Campus Entry)</option>
+                    <option value="entrance_1">🚪 Main Building — Entrance 1</option>
+                    <option value="entrance_2">🚪 Main Building — Entrance 2</option>
+                    <optgroup label="Main Academic Building — Ground Floor">
+                      <option value="admin">🏢 Administrative Area (Admission)</option>
+                      <option value="scholarship">📜 Scholarship Section</option>
+                      <option value="accounts">💳 Accounts & Student Section</option>
+                      <option value="comp_lab_1">🖥️ 1st Year Computer Lab</option>
+                      <option value="principal">🏛️ Principal's Cabin</option>
+                      <option value="toilet_boys">🚻 Boys' Restroom</option>
+                      <option value="management">👔 Management Room</option>
+                      <option value="fy_dept">🔬 1st Year Dept (Applied Science)</option>
+                      <option value="hod_staff">👥 HOD Cabin & Staff Room</option>
+                    </optgroup>
+                    <optgroup label="Main Academic Building — Upper Floors">
+                      <option value="cse">💻 1st Floor: Computer Science Dept</option>
+                      <option value="etc">📡 2nd Floor: Electronics & Telecom Dept</option>
+                      <option value="mba">🎓 2nd Floor: MBA Department</option>
+                      <option value="aiml">🤖 3rd Floor: AIML Department</option>
+                    </optgroup>
+                    <optgroup label="Second Academic Building">
+                      <option value="sec_entrance">🚪 Building 2: Main Entrance</option>
+                      <option value="mech">⚙️ Ground Floor: Mechanical Dept</option>
+                      <option value="elec">⚡ Ground Floor: Electrical Dept</option>
+                      <option value="library">📚 1st Floor: Central Library</option>
+                      <option value="auditorium">🎭 1st Floor: Auditorium</option>
+                      <option value="aids">🧠 2nd Floor: CSE (AI & DS) Dept</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Swap Button -->
+              <div class="swap-row">
+                <button id="swapLocationsBtn" class="swap-btn" title="Swap Origin and Destination">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                    <polyline points="17 14 12 9 7 14"></polyline>
+                    <line x1="12" y1="9" x2="12" y2="21"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Destination -->
+              <div class="input-row">
+                <div class="pin-icon dest-pin">B</div>
+                <div class="select-box">
+                  <label for="destLocationSelect">Destination</label>
+                  <select id="destLocationSelect">
+                    <option value="mba" selected>🎓 MBA Department (Main Bldg • 2nd Fl)</option>
+                    <option value="admin">🏢 Administrative Area (Admission)</option>
+                    <option value="principal">🏛️ Principal's Cabin (Ground Fl)</option>
+                    <option value="cse">💻 Computer Science Department (1st Fl)</option>
+                    <option value="aiml">🤖 AIML Department (3rd Fl)</option>
+                    <option value="library">📚 Central Library (Bldg 2 • 1st Fl)</option>
+                    <option value="auditorium">🎭 Auditorium (Bldg 2 • 1st Fl)</option>
+                    <option value="aids">🧠 CSE (AI & DS) Dept (Bldg 2 • 2nd Fl)</option>
+                    <option value="mech">⚙️ Mechanical Department</option>
+                    <option value="elec">⚡ Electrical Department</option>
+                    <option value="scholarship">📜 Scholarship Section</option>
+                    <option value="accounts">💳 Accounts & Student Section</option>
+                    <option value="comp_lab_1">🖥️ 1st Year Computer Lab</option>
+                    <option value="toilet_boys">🚻 Boys' Restroom</option>
+                    <option value="management">👔 Management Room</option>
+                    <option value="hod_staff">👥 HOD Cabin & Staff Room</option>
+                    <option value="fy_dept">🔬 1st Year Dept (Applied Science)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button id="getDirectionsBtn" class="find-route-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>Find Directions</span>
+            </button>
+          </div>
+
+          <!-- Step-by-Step Directions Card -->
+          <div class="directions-card">
+            <div class="route-summary-bar">
+              <div class="summary-metric">
+                <span class="metric-val" id="routeEtaValue">2 min</span>
+                <span class="metric-lbl">Walk Time</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-val" id="routeDistanceValue">45 m</span>
+                <span class="metric-lbl">Distance</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-val" id="routeElevationValue">Main • Fl 2</span>
+                <span class="metric-lbl">Target Level</span>
+              </div>
+            </div>
+
+            <!-- Action Chips (Simulate & Speak) -->
+            <div class="sim-actions">
+              <button id="simWalkBtn" class="action-chip-btn" title="Simulate walking path">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Simulate Walk</span>
+              </button>
+              <button id="speakStepsBtn" class="action-chip-btn" title="Read directions aloud">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <span>Speak Steps</span>
+              </button>
+            </div>
+
+            <!-- Steps List -->
+            <div class="timeline-list" id="stepsTimelineContainer">
+              <!-- Dynamically populated steps -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 2: Campus Directory -->
+        <div id="navDirectoryTab" class="tab-pane">
+          <div class="directory-filters">
+            <button class="filter-btn active" data-filter="all">All (18)</button>
+            <button class="filter-btn" data-filter="academic">Academics</button>
+            <button class="filter-btn" data-filter="admin">Admin & Executive</button>
+            <button class="filter-btn" data-filter="facility">Facilities & Labs</button>
+          </div>
+          <div id="directoryList" class="directory-items-container">
+            <!-- Dynamically populated directory items -->
+          </div>
+        </div>
+
+        <!-- TAB 3: Floor Guide Matrix -->
+        <div id="navMatrixTab" class="tab-pane">
+          <div class="matrix-container">
+            
+            <!-- Main Building Block -->
+            <div class="matrix-block">
+              <div class="matrix-block-title">
+                <span class="matrix-tag">BUILDING 1</span>
+                <span>Main Academic Building (4 Floors)</span>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('main', '3')">
+                <div class="level-badge">3rd Fl</div>
+                <div class="level-text">
+                  <strong>AIML Department</strong>
+                  <span>Artificial Intelligence & Machine Learning</span>
+                </div>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('main', '2')">
+                <div class="level-badge">2nd Fl</div>
+                <div class="level-text">
+                  <strong>Electronics & Telecom • MBA Department</strong>
+                  <span>ETC Department & MBA (10m straight, turn right)</span>
+                </div>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('main', '1')">
+                <div class="level-badge">1st Fl</div>
+                <div class="level-text">
+                  <strong>Computer Science Department (CSE)</strong>
+                  <span>Core CSE computing laboratories & classrooms</span>
+                </div>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('main', 'G')">
+                <div class="level-badge">Ground</div>
+                <div class="level-text">
+                  <strong>Admin • Principal's Cabin • 1st Year Dept</strong>
+                  <span>Admission, Scholarship, Accounts, 1st Year Comp Lab, Restroom</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Second Building Block -->
+            <div class="matrix-block">
+              <div class="matrix-block-title">
+                <span class="matrix-tag">BUILDING 2</span>
+                <span>Second Academic Building (3 Floors)</span>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('second', '2')">
+                <div class="level-badge">2nd Fl</div>
+                <div class="level-text">
+                  <strong>CSE (AI & DS) Department</strong>
+                  <span>Entire level dedicated to AI & Data Science</span>
+                </div>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('second', '1')">
+                <div class="level-badge">1st Fl</div>
+                <div class="level-text">
+                  <strong>Central Library & Auditorium</strong>
+                  <span>Central Library (left) and 500+ seat Auditorium (right)</span>
+                </div>
+              </div>
+
+              <div class="matrix-level-item" onclick="switchView('second', 'G')">
+                <div class="level-badge">Ground</div>
+                <div class="level-text">
+                  <strong>Mechanical Dept • Electrical Dept</strong>
+                  <span>CAD/CAM, Workshops, Circuits & Power Systems labs</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Main Map Viewport -->
+      <main class="map-viewport-container">
+
+        <!-- Top Floating Controls -->
+        <div class="map-top-bar">
+          <!-- Building Navigation Buttons -->
+          <div class="pill-cluster" id="buildingSelector">
+            <button class="pill-btn active" data-view="campus">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              </svg>
+              <span>Campus Map</span>
+            </button>
+            <button class="pill-btn" data-view="main">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+              </svg>
+              <span>Main Academic Bldg</span>
+            </button>
+            <button class="pill-btn" data-view="second">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              </svg>
+              <span>2nd Academic Bldg</span>
+            </button>
+          </div>
+
+          <!-- Floor Level Buttons -->
+          <div class="pill-cluster" id="floorSelector">
+            <span class="floor-cluster-label">Floor</span>
+            <div class="floor-btn-list" id="floorBtnGroup">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Zoom Tools -->
+          <div class="pill-cluster">
+            <button id="zoomInBtn" class="map-tool-icon-btn" title="Zoom In">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button id="zoomOutBtn" class="map-tool-icon-btn" title="Zoom Out">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button id="resetMapBtn" class="map-tool-icon-btn" title="Reset View">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M12 3v18"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- SVG Map Container -->
+        <div id="mapCanvasWrapper" class="map-canvas-wrapper">
+          <div id="svgContainer" class="svg-container">
+            <!-- Dynamic architectural SVG injected via JS -->
+          </div>
+
+          <!-- Hover Tooltip -->
+          <div id="mapHoverCard" class="map-hover-card hidden">
+            <div class="hover-card-icon" id="hoverIcon">📍</div>
+            <div class="hover-card-body">
+              <strong id="hoverTitle">Room Title</strong>
+              <span id="hoverSub">Department • Floor</span>
+            </div>
+          </div>
+
+          <!-- Active Floor Badge -->
+          <div class="current-level-hud">
+            <div class="hud-dot"></div>
+            <div class="hud-details">
+              <strong id="currentLevelName">Main Academic Building • Ground Floor</strong>
+              <span id="currentLevelSub">Admin, Principal’s Cabin, 1st Year Dept, Comp Lab, Accounts</span>
+            </div>
+          </div>
+
+          <!-- Map Legend -->
+          <div class="clean-legend">
+            <span class="clean-legend-title">Categories</span>
+            <div class="legend-row"><span class="legend-swatch swatch-tech"></span>Computer &amp; AI</div>
+            <div class="legend-row"><span class="legend-swatch swatch-core"></span>Core Engineering</div>
+            <div class="legend-row"><span class="legend-swatch swatch-admin"></span>Admin &amp; Principal</div>
+            <div class="legend-row"><span class="legend-swatch swatch-mba"></span>MBA Department</div>
+            <div class="legend-row"><span class="legend-swatch swatch-amenity"></span>Library &amp; Auditorium</div>
+            <div class="legend-row"><span class="legend-swatch swatch-route"></span>Walking Route</div>
+          </div>
+        </div>
+
+        <!-- Location Inspector Drawer -->
+        <div id="locationDrawer" class="location-inspector-drawer hidden">
+          <div class="inspector-handle"></div>
+          
+          <div class="inspector-header">
+            <div class="inspector-title-row">
+              <div class="inspector-icon-box" id="drawerIconBox">🏢</div>
+              <div class="inspector-titles">
+                <div class="inspector-badge-row">
+                  <span id="drawerBadge" class="inspector-badge">Ground Floor</span>
+                  <span id="drawerBuildingBadge" class="inspector-badge outline">Main Building</span>
+                </div>
+                <h2 id="drawerTitle">Administrative Area (Admission Area)</h2>
+                <p id="drawerBuilding">Near Entrance 1 • Campus Reception Desk</p>
+              </div>
+            </div>
+            <button id="closeDrawerBtn" class="close-inspector-btn" title="Close details">&times;</button>
+          </div>
+
+          <div class="inspector-content-grid">
+            <div class="inspector-panel">
+              <div class="panel-header">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                </svg>
+                <span>DIRECTIONS FROM PARKING AREA</span>
+              </div>
+              <p id="drawerDirections">From the parking area, go straight and turn right. Enter through Entrance 1; the Administrative Area is on the ground floor.</p>
+            </div>
+
+            <div class="inspector-panel">
+              <div class="panel-header">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>DESCRIPTION &amp; DETAILS</span>
+              </div>
+              <p id="drawerDesc">Dedicated to student admissions, enrollment inquiries, official documentation, and general administrative services.</p>
+            </div>
+          </div>
+
+          <div class="inspector-action-bar">
+            <button id="drawerNavigateToBtn" class="inspector-btn primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>Navigate to this Room</span>
+            </button>
+            <button id="drawerStartFromBtn" class="inspector-btn secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              <span>Set as Start Point</span>
+            </button>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Command Palette (Ctrl+K Modal) -->
+    <div id="cmdPaletteOverlay" class="cmd-palette-overlay hidden">
+      <div class="cmd-palette-box">
+        <div class="cmd-input-bar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="cmdInput" placeholder="Type a department, office, lab, or toilet to find directions..." autocomplete="off">
+          <span class="cmd-esc-badge">ESC</span>
+        </div>
+
+        <div class="cmd-results-list" id="cmdResultsList">
+          <!-- Dynamically populated search items -->
+        </div>
+
+        <div class="cmd-footer-bar">
+          <span>Use <strong>&uarr; &darr;</strong> to browse, <strong>Enter</strong> to select, <strong>Esc</strong> to close</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-nav-bar">
+      <button class="mobile-nav-btn active" data-tab="navRouteTab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+        </svg>
+        <span>Route</span>
+      </button>
+      <button class="mobile-nav-btn" data-action="toggleMobileMap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+        </svg>
+        <span>Map</span>
+      </button>
+      <button class="mobile-nav-btn" data-tab="navDirectoryTab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Directory</span>
+      </button>
+      <button class="mobile-nav-btn" data-tab="navMatrixTab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <span>Floor Guide</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

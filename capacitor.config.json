@@ -1,0 +1,10 @@
+{
+  "appId": "in.edu.jitnagpur.campusnav",
+  "appName": "JIT Campus Navigator",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#ffffff",
+    "allowMixedContent": true
+  }
+}
