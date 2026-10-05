@@ -4,6 +4,7 @@ node_modules/
 # Built binaries & packages
 *.apk
 *.aab
+*.zip
 
 # Generated build output
 www/
